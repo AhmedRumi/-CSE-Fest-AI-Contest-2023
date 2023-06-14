@@ -16,6 +16,7 @@ public class Game {
     @Inject private MultiplayerGameManager<Player> gameManager;
     @Inject private Maze maze;
     @Inject private View view;
+    @Inject private PlaygroundMatrix playgroundMatrix;
     ArrayList<Minion> aliveMinions;
     private ArrayList<Coin> availableCoins;
     private ArrayList<MinePower>activeMines;
@@ -36,13 +37,56 @@ public class Game {
     }
 
 
+//    private void generateCoins() {
+//        int row = maze.getRow();
+//        int col = maze.getCol();
+//        availableCoins = new ArrayList<>();
+//        for (int i = 0; i < row; i++) {
+//            for (int j = 0; j <= col/2; j++) {
+//                if (maze.getGrid()[i][j] == 1) continue;
+//                boolean occupied = false;
+//                for (Player player : gameManager.getPlayers()) {
+//                    for (Minion minion : player.getMinions()) {
+//                        if (minion.getPos().manhattanTo(i, j) == 0) {
+//                            occupied = true;
+//                        }
+//                    }
+//                    if (player.getFlagBase().getPos().manhattanTo(i, j) == 0) {
+//                        occupied = true;
+//                    }
+//                }
+//                if (!occupied) {
+////                    int coinValue = Config.COIN_VALUES[RandomUtil.randomWeightedIndex(Config.COIN_WEIGHTS)];
+//                    int coinValue = Config.COIN_VALUES[0];
+//                    if(RandomUtil.randomInt(0, 1) == 1) {
+//                        availableCoins.add(new Coin(new Coord(i, j), coinValue));
+//                        if (j < col-1-j) {
+//                            // mirroring
+//                            availableCoins.add(new Coin(new Coord(i, col-1-j), coinValue));
+//                        }
+//                    }
+////                    availableCoins.add(new Coin(new Coord(i, j), coinValue));
+////                    if (j < col-1-j) {
+////                        // mirroring
+////                        availableCoins.add(new Coin(new Coord(i, col-1-j), coinValue));
+////                    }
+//                }
+//            }
+//        }
+//    }
+
     private void generateCoins() {
-        int row = maze.getRow();
-        int col = maze.getCol();
+        int row = Config.MAX_MAZE_ROW;
+        int col = Config.MAX_MAZE_COl;
+
         availableCoins = new ArrayList<>();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j <= col/2; j++) {
-                if (maze.getGrid()[i][j] == 1) continue;
+//                System.out.print(playgroundMatrix.getLayout());
+                if(playgroundMatrix.getLayout() == null) {
+                    System.out.println("NULL found!!");
+                }
+                if (playgroundMatrix.getLayout()[i][j] == Config.NO_RESOURCE) continue;
                 boolean occupied = false;
                 for (Player player : gameManager.getPlayers()) {
                     for (Minion minion : player.getMinions()) {
@@ -50,25 +94,20 @@ public class Game {
                             occupied = true;
                         }
                     }
-                    if (player.getFlagBase().getPos().manhattanTo(i, j) == 0) {
-                        occupied = true;
-                    }
+//                    if (player.getFlagBase().getPos().manhattanTo(i, j) == 0) {
+//                        occupied = true;
+//                    }
                 }
-                if (!occupied) {
+                if (!occupied && (playgroundMatrix.getLayout()[i][j] == Config.INVISIBLE_RESOURCE ||
+                        playgroundMatrix.getLayout()[i][j] == Config.VISIBLE_RESOURCE)) {
 //                    int coinValue = Config.COIN_VALUES[RandomUtil.randomWeightedIndex(Config.COIN_WEIGHTS)];
                     int coinValue = Config.COIN_VALUES[0];
-                    if(RandomUtil.randomInt(0, 1) == 1) {
-                        availableCoins.add(new Coin(new Coord(i, j), coinValue));
-                        if (j < col-1-j) {
-                            // mirroring
-                            availableCoins.add(new Coin(new Coord(i, col-1-j), coinValue));
-                        }
+
+                    availableCoins.add(new Coin(new Coord(i, j), coinValue));
+                    if (j < col-1-j) {
+                        // mirroring
+                        availableCoins.add(new Coin(new Coord(i, col-1-j), coinValue));
                     }
-//                    availableCoins.add(new Coin(new Coord(i, j), coinValue));
-//                    if (j < col-1-j) {
-//                        // mirroring
-//                        availableCoins.add(new Coin(new Coord(i, col-1-j), coinValue));
-//                    }
                 }
             }
         }

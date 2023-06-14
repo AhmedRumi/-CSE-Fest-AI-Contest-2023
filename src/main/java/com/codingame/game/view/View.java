@@ -17,6 +17,7 @@ import java.util.List;
 public class View {
     @Inject Game game;
     @Inject Maze maze;
+    @Inject PlaygroundMatrix playgroundMatrix;
     @Inject GraphicEntityModule graphicEntityModule;
     @Inject private MultiplayerGameManager<Player> gameManager;
     @Inject TooltipModule tooltips;
@@ -124,6 +125,15 @@ public class View {
             .setBaseHeight(world.getHeight())
             .setBaseWidth(world.getWidth());
     }
+
+//    public void drawPlayground() {
+//
+//        for (int i = 0; i < Config.MAX_MAZE_ROW; i++) {
+//            for (int j = 0; j < Config.MAX_MAZE_COl; j++) {
+//
+//            }
+//        }
+//    }
 
     public void drawMaze(int row, int col, int[][] grid) {
 
@@ -345,6 +355,7 @@ public class View {
 
         drawBackground();
         // drawOuterRectangle();
+//        drawPlayground();
         drawMaze(row, col, grid);
         drawMinions();
         drawFlags();

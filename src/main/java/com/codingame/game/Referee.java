@@ -19,6 +19,7 @@ public class Referee extends AbstractReferee {
     @Inject Game game;
     @Inject RandomUtil randomUtil;
     @Inject CommandParser commandParser;
+    @Inject PlaygroundMatrix playgroundMatrix;
     @Inject private EndScreenModule endScreenModule;
 
     boolean gameOverFrame;
@@ -29,6 +30,7 @@ public class Referee extends AbstractReferee {
 
         randomUtil.init(gameManager.getSeed());
         maze.init();
+        playgroundMatrix.init();
         game.init();
         view.init();
         this.sendInitialInfo();

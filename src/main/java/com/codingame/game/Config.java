@@ -20,7 +20,16 @@ public class Config {
     public static final int MAX_MAZE_ROW = 20;
 
     public static final int MIN_MAZE_COL = 33;
-    public static final int MAX_MAZE_COl = 35;
+    public static final int MAX_MAZE_COl = 36;
+
+    //ratul
+    public static final int MAX_PRIMARY_RESOURCE_CLUSTER = 3;
+    public static final int RANDOM_WALK_MATRIX_DIM = 5;
+    public static final int MAX_RESOURCE_IN_ONE_CLUSTER = 8;
+    public static final int MIN_RESOURCE_IN_ONE_CLUSTER = 4;
+    public static final int VISIBLE_RESOURCE = 2;
+    public static final int INVISIBLE_RESOURCE = 1;
+    public static final int NO_RESOURCE = 0;
 
     public static final int MAZE_UPPER_OFFSET = 200;
 
