@@ -68,7 +68,7 @@ public class Maze {
 //        row = RandomUtil.randomInt(Config.MIN_MAZE_ROW, Config.MAX_MAZE_ROW);
 //        col = RandomUtil.randomOddInt(Config.MIN_MAZE_COL, Config.MAX_MAZE_COl);
         row = Config.MAX_MAZE_ROW;
-        col = Config.MIN_MAZE_COL;
+        col = Config.MAX_MAZE_COl;
         grid = new int[row][col];
         Grid gridObj = new Grid(col, row);
         TetrisBasedMapGenerator generator = new TetrisBasedMapGenerator();

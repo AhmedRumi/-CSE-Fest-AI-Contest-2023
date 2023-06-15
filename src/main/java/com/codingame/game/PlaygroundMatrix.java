@@ -8,7 +8,7 @@ public class PlaygroundMatrix {
     private int[][] layout;
 
     public void init() {
-        System.out.println("In init!!");
+        // System.out.println("In init!!");
         layout = new int[Config.MAX_MAZE_ROW][Config.MAX_MAZE_COl];
         for(int i=0;i<Config.MAX_MAZE_ROW;i++) {
             for(int j=0;j<Config.MAX_MAZE_COl;j++) {
@@ -17,7 +17,7 @@ public class PlaygroundMatrix {
         }
         System.out.println(layout[3][1]);
         // System.out.print(layout);
-        System.out.println("Out init!!");
+        // System.out.println("Out init!!");
         int offset = Config.MAX_MAZE_COl/(2*Config.MAX_PRIMARY_RESOURCE_CLUSTER);
 
         for(int i=0;i< Config.MAX_PRIMARY_RESOURCE_CLUSTER;i++) {
@@ -57,7 +57,10 @@ public class PlaygroundMatrix {
 
     //only return -1 or +1
     public int toss() {
-        return RandomUtil.randomInt(0, 2) - 1;
+        int tmp = RandomUtil.randomInt(0, 2) - 1;
+        // return RandomUtil.randomInt(0, 2) - 1;
+        System.out.println("toss:" + tmp);
+        return tmp;
     }
 
     public int[][] getLayout() {
