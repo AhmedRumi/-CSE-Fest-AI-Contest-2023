@@ -102,11 +102,12 @@ public class Game {
                         playgroundMatrix.getLayout()[i][j] == Config.VISIBLE_RESOURCE)) {
 //                    int coinValue = Config.COIN_VALUES[RandomUtil.randomWeightedIndex(Config.COIN_WEIGHTS)];
                     int coinValue = Config.COIN_VALUES[0];
+                    int health = Config.COIN_HEALTHS[0];
 
-                    availableCoins.add(new Coin(new Coord(i, j), coinValue));
+                    availableCoins.add(new Coin(new Coord(i, j), coinValue, health));
                     if (j < col-1-j) {
                         // mirroring
-                        availableCoins.add(new Coin(new Coord(i, col-1-j), coinValue));
+                        availableCoins.add(new Coin(new Coord(i, col-1-j), coinValue, health));
                     }
                 }
             }
