@@ -1,8 +1,8 @@
 package com.codingame.game.action;
-
+import com.codingame.game.*;
 public class mineResource implements Action{
     @Override
     public ActionType getActionType() {
-        return null;
+        return ActionType.MINE_RESOURCE;
     }
 }

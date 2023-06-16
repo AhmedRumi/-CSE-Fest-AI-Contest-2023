@@ -101,7 +101,7 @@ public class Game {
                 if (!occupied && (playgroundMatrix.getLayout()[i][j] == Config.INVISIBLE_RESOURCE ||
                         playgroundMatrix.getLayout()[i][j] == Config.VISIBLE_RESOURCE)) {
 //                    int coinValue = Config.COIN_VALUES[RandomUtil.randomWeightedIndex(Config.COIN_WEIGHTS)];
-                    int coinValue = Config.COIN_VALUES[0];
+                    int coinValue = Config.COIN_VALUES[2];
                     int health = Config.COIN_HEALTHS[0];
 
                     availableCoins.add(new Coin(new Coord(i, j), coinValue, health));
@@ -382,7 +382,7 @@ public class Game {
             for (Player player : gameManager.getPlayers()) {
                 for (Minion minion : player.getMinions()) {
                     if (minion.isDead()) continue;
-                    if (minion.getPos().manhattanTo(coin.getPosition()) == 0) {
+                    if (minion.getPos().manhattanTo(coin.getPosition()) == 0 && coin.getHealth() == 0) {
                         player.addCredit(coin.getValue());
                         acquired = true;
                         break;
@@ -401,6 +401,7 @@ public class Game {
 
         updateFlagPosition();   // acquire flag for immediately unfrozen minions
         updateMinionMovement(); // resolve movement
+        updateResourceHealth();
         updateCoins();          // update coin position
         updateDamage();         // use power ups
         detonateMine();         // check and activate mines
@@ -492,6 +493,34 @@ public class Game {
             }
         }
     }
+
+    private void updateResourceHealth() {
+        for (Player player : gameManager.getPlayers()) {
+            for (Minion minion : player.getMinions()) {
+                for (Coin coin : availableCoins) {
+                    if (minion.isDead()) continue;
+                    if (minion.getIntendedAction().getActionType() == ActionType.MINE_RESOURCE){
+                        if (minion.getPos().manhattanTo(coin.getPosition()) == 0 && coin.getHealth() > 0) {
+                            coin.reduceHealth(minion.miningStrength);
+
+                            break;
+                        }
+                        else{
+                            // ToDo: Show No resource here
+                        }
+                    }
+
+                }
+            }
+        }
+        for(Minion minion: aliveMinions) {
+            if(minion.getIntendedAction().getActionType() == ActionType.MINE_RESOURCE) {
+                mineResource hitResource = (mineResource) minion.getIntendedAction();
+
+            }
+        }
+    }
+
 
     Player getOpponentOf(Player player) {
         return gameManager.getPlayers().get(player.getIndex() ^ 1);

@@ -60,8 +60,17 @@ public class CommandParser {
                     + "$",
             Pattern.CASE_INSENSITIVE
     );
+
+    //ToDo: Dunno what this is doing tho
+    static final Pattern PLAYER_COLLECT_PATTERN = Pattern.compile(
+            "^COLLECT\\s+(?<id>\\d+)"
+                    + "(?:\\s+(?<message>.+))?"
+                    + "$",
+            Pattern.CASE_INSENSITIVE
+    );
+
     static final Pattern PLAYER_ACTION_PATTERN = Pattern.compile(
-            "^(WAIT|MOVE|FIRE|FREEZE|MINE)\\s+(?<id>\\d+).*",
+            "^(WAIT|MOVE|FIRE|FREEZE|MINE|COLLECT)\\s+(?<id>\\d+).*",
             Pattern.CASE_INSENSITIVE
     );
 
@@ -129,6 +138,10 @@ public class CommandParser {
     private void handleFreezeCommand(Minion minion) {
         minion.setIntendedAction(new FreezePower(minion.getPos(), minion));
     }
+    private void handleCollectCommand(Minion minion) {
+        minion.setIntendedAction(new mineResource());
+        //ToDo: may need to pass more params
+    }
 
     public void parseCommands(Player player, List<String> outputs) {
 
@@ -170,6 +183,9 @@ public class CommandParser {
                 }
                 else if(PLAYER_MINE_PATTERN.matcher(str).matches()) {
                     handleMineCommand(PLAYER_MINE_PATTERN.matcher(str), minion);
+                }
+                else if(PLAYER_COLLECT_PATTERN.matcher(str).matches()) {
+                    handleCollectCommand(minion);
                 }
                 else {
                     throw new InvalidInputException(EXPECTED, str);

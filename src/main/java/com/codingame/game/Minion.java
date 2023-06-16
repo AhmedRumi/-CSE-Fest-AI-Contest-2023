@@ -9,7 +9,7 @@ public class Minion {
 
     int minionID;
     Player owner;
-    int health, timeOut;
+    int health, timeOut, miningStrength;
     Coord pos;
     List<String> gameSummary;
     Action intendedAction;
@@ -19,6 +19,7 @@ public class Minion {
         this.minionID = minionID;
         this.owner = owner;
         this.health = Config.MINION_TOTAL_HEALTH;
+        this.miningStrength = Config.MINION_INITIAL_MINING_STRENGTH;
         this.intendedAction = Action.NO_ACTION;
         this.gameSummary = new ArrayList<>();
         this.pathToDest = new ArrayList<>();

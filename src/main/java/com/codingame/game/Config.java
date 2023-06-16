@@ -3,6 +3,7 @@ package com.codingame.game;
 public class Config {
 
     public static final int MINION_TOTAL_HEALTH = 100;
+    public static final int MINION_INITIAL_MINING_STRENGTH = 12;
 
     public static final int RIGHT_PLAYER_COLOR = 0x0000ff;
     public static final int LEFT_PLAYER_COLOR = 0xff0000;
