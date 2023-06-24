@@ -9,6 +9,8 @@ import javax.inject.Singleton;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.abs;
+
 @Singleton
 public class Game {
 
@@ -20,6 +22,8 @@ public class Game {
     ArrayList<Minion> aliveMinions;
     private ArrayList<Coin> availableCoins;
     private ArrayList<MinePower>activeMines;
+
+    private int range;
 
     void init() {
 
@@ -34,6 +38,7 @@ public class Game {
         generateCoins();
 
         activeMines = new ArrayList<>();
+        this.range = Config.INITIAL_FOG_OF_WAR;
     }
 
 
@@ -130,7 +135,11 @@ public class Game {
             if(minion.isDead()) continue;
             for(Coin coin: availableCoins) {
                 cnt++;
-                if(maze.isVisible(coin.getPosition(), minion.getPos())) {
+                //Rumi
+//                if(maze.isVisible(coin.getPosition(), minion.getPos())) {
+//                    visibleCoins.add(coin);
+//                }
+                if(abs(minion.pos.getX()-coin.getPosition().getX())+abs(minion.pos.getY()-coin.getPosition().getY())<=range) {
                     visibleCoins.add(coin);
                 }
             }
@@ -280,8 +289,11 @@ public class Game {
         for(Minion opponentMinion: opponent.getMinions()) {
             boolean visible = false;
             for(Minion minion: player.getMinions()) {
-                if(!minion.isDead() && !opponentMinion.isDead() && maze.isVisible(opponentMinion.getPos(), minion.getPos())) {
-                    visible = true;
+                //Rumi
+//                if(!minion.isDead() && !opponentMinion.isDead() && maze.isVisible(opponentMinion.getPos(), minion.getPos()) && abs(minion.pos.getX()-opponentMinion.pos.getX()) + abs(minion.pos.getY()-opponentMinion.pos.getY()) <= range) {
+                    if(!minion.isDead() && !opponentMinion.isDead() && abs(minion.pos.getX()-opponentMinion.pos.getX()) + abs(minion.pos.getY()-opponentMinion.pos.getY()) <= range) {
+
+                        visible = true;
                     break;
                 }
             }
@@ -294,7 +306,7 @@ public class Game {
         for(Minion minion: visibleOpponents) {
             ret.add(minion.getID() + " " + minion.getPos().getX() + " " + minion.getPos().getY() + " " + minion.getHealth() + " "  + minion.getTimeOut());
         }
-
+        //Rumi
         ArrayList<Coin>visibleCoins = this.getVisibleCoins(player);
         ret.add(visibleCoins.size() + "");
         for(Coin coin: visibleCoins) {

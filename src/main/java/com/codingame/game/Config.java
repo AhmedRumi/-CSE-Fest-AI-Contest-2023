@@ -63,4 +63,5 @@ public class Config {
     public static final int FRAME_DURATION = 300;
     public static final int TOTAL_UPGRADEABLE_SKILL_COUNT = 1;
 
+    public static final int INITIAL_FOG_OF_WAR = 5;
 }
