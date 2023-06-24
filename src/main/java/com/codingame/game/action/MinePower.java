@@ -9,8 +9,8 @@ public class MinePower extends PowerUp{
 
 //    private final int damageDistance;
 
-    public MinePower(Coord origin, Minion powerUpUser) {
-        super(origin, powerUpUser);
+    public MinePower(Coord origin, Minion powerUpUser, ActionDirection actionDirection) {
+        super(origin, powerUpUser, actionDirection);
         this.damage = Config.MINE_DAMAGE;
         this.price = Config.MINE_PRICE;
         this.damageDistLimit = Config.MINE_RANGE;

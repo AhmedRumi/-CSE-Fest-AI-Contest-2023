@@ -55,5 +55,8 @@ public class Config {
     };
 
     public static final int INF = 10000000;
+
+    public static final int FOG_OF_WAR = 20;
+    public static final int PRIMARY_FIRE_DISTANCE = 50;
     public static final int FRAME_DURATION = 300;
 }
