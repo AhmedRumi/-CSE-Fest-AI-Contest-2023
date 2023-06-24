@@ -55,6 +55,10 @@ public class Mover {
 
             alive_cnt = scanner.nextInt();
             ArrayList<Integer>ids = new ArrayList<>(alive_cnt);
+            ArrayList<Integer>xs = new ArrayList<>(alive_cnt);
+            ArrayList<Integer>ys = new ArrayList<>(alive_cnt);
+            ArrayList<Integer>cols = new ArrayList<>(alive_cnt);
+
 
             for(int i = 0 ; i < alive_cnt ; i++) {
                 int id, x, y, health, timeout;
@@ -64,6 +68,8 @@ public class Mover {
                 health = scanner.nextInt();
                 timeout = scanner.nextInt();
                 ids.add(id);
+                xs.add(x);
+                ys.add(y);
             }
 
             opp_seen_cnt = scanner.nextInt();
@@ -77,17 +83,38 @@ public class Mover {
                 timeout = scanner.nextInt();
                 System.err.println("Seeing " + id + " " + x + " " + y + " " + health + " " + timeout);
             }
+
             visible_coin_cnt = scanner.nextInt();
             for(int i = 0 ; i < visible_coin_cnt ; i++) {
                 int x, y;
                 x = scanner.nextInt();
                 y = scanner.nextInt();
+                for(int j=0;j<alive_cnt;j++)
+                {
+                    if(xs.get(j)==x && ys.get(j)==y)
+                    {
+                        cols.add(ids.get(j));
+                    }
+                }
             }
 
 
             StringBuilder str = new StringBuilder();
             for(int i = 0 ; i < alive_cnt ; i++) {
+
                 if(i > 0) str.append(" | ");
+                int temp=0;
+
+                for(int j=0;j<cols.size();j++)
+                {
+                    if(cols.get(j)==ids.get(i))
+                    {
+                        str.append(String.format("COLLECT %d", ids.get(i)) );
+                        temp=1;
+                        break;
+                    }
+                }
+                if(temp==1)continue;
                 if(captured == 1) {
                     str.append(String.format("MOVE %d %d %d", ids.get(i), my_base_x, my_base_y) );
                 }
