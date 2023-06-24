@@ -375,6 +375,19 @@ public class Game {
         return path;
     }
 
+    private void updateUpgradeMiningStrength() {
+        for (Player player : gameManager.getPlayers()) {
+            for (Minion minion : player.getMinions()) {
+                if (minion.isDead()) continue;
+
+            }
+        }
+    }
+
+
+
+
+
     private void updateCoins() {
         ArrayList<Coin> acquiredCoins = new ArrayList<>();
         for (Coin coin : availableCoins) {
@@ -383,6 +396,7 @@ public class Game {
                 for (Minion minion : player.getMinions()) {
                     if (minion.isDead()) continue;
                     if (minion.getPos().manhattanTo(coin.getPosition()) == 0 && coin.getHealth() == 0) {
+                        minion.addSummary(String.format("Minion %d, Finished COLLECT-ing at (%d, %d)", minion.getID(), minion.getPos().getX(), minion.getPos().getY()));
                         player.addCredit(coin.getValue());
                         acquired = true;
                         break;
@@ -400,6 +414,7 @@ public class Game {
     public void updateGameState() {
 
         updateFlagPosition();   // acquire flag for immediately unfrozen minions
+        updateUpgradeSkill();
         updateMinionMovement(); // resolve movement
         updateResourceHealth();
         updateCoins();          // update coin position
@@ -494,31 +509,66 @@ public class Game {
         }
     }
 
-    private void updateResourceHealth() {
+    private void updateUpgradeSkill() {
         for (Player player : gameManager.getPlayers()) {
             for (Minion minion : player.getMinions()) {
+                if (minion.isDead()) continue;
+                if(minion.getIntendedAction().getActionType() == ActionType.UPGRADE) {
+                    UpgradeSkill upSkill = (UpgradeSkill) minion.getIntendedAction();
+                    if(!upSkill.canBuy(minion.getOwner())) {
+                        minion.addSummary(String.format("Cannot buy Upgrade %s, not enough credit available", upSkill.getUpgradeType()));
+                    }
+                    else if(!upSkill.checkSkillLimit()) {
+                        minion.addSummary(String.format("Max Upgrade reached for %s, cannot upgrade More", upSkill.getUpgradeType()));
+                    }
+                    else {
+
+
+                        minion.addSummary(String.format("Minion %d is using Upgrade: %s", minion.getID(), upSkill.getUpgradeType()));
+
+                        minion.getOwner().decreaseCredit(upSkill.getPrice());
+                        minion.increaseUpgradeStrength(upSkill.getUpgradeType().ordinal());
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateResourceHealth() {
+        for (Player player : gameManager.getPlayers()) {
+
+            for (Minion minion : player.getMinions()) {
+                int collect_state=0;
                 for (Coin coin : availableCoins) {
+
                     if (minion.isDead()) continue;
                     if (minion.getIntendedAction().getActionType() == ActionType.MINE_RESOURCE){
                         if (minion.getPos().manhattanTo(coin.getPosition()) == 0 && coin.getHealth() > 0) {
-                            coin.reduceHealth(minion.miningStrength);
-
+                            coin.reduceHealth(Config.MINING_STRENGTHS[minion.getSkillLevel(0)]);
+                            minion.addSummary(String.format("Minion %d COLLECT-ing at (%d, %d)", minion.getID(), minion.getPos().getX(), minion.getPos().getY()));
+                            collect_state=1;
                             break;
                         }
                         else{
                             // ToDo: Show No resource here
+
                         }
                     }
 
                 }
-            }
-        }
-        for(Minion minion: aliveMinions) {
-            if(minion.getIntendedAction().getActionType() == ActionType.MINE_RESOURCE) {
-                mineResource hitResource = (mineResource) minion.getIntendedAction();
+                if(minion.getIntendedAction().getActionType() == ActionType.MINE_RESOURCE && collect_state==0)
+                {
+                    minion.addSummary(String.format("Minion %d Failed to COLLECT at (%d, %d)", minion.getID(), minion.getPos().getX(), minion.getPos().getY()));
 
+                }
             }
         }
+//        for(Minion minion: aliveMinions) {
+//            if(minion.getIntendedAction().getActionType() == ActionType.MINE_RESOURCE) {
+//                mineResource hitResource = (mineResource) minion.getIntendedAction();
+//
+//            }
+//        }
     }
 
 
