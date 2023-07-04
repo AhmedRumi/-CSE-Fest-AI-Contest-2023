@@ -21,7 +21,7 @@ public class Config {
     public static final int[] UPGRADE_LIMITS = {3}; //COLLECT
     public static final int MINING_UPGRADE_PRICE = 10;
     public static final int MIN_MINIONS = 3;
-    public static final int MAX_MINIONS = 3;
+    public static final int MAX_MINIONS = 5;
 
     public static final int MIN_MAZE_ROW = 17;
     public static final int MAX_MAZE_ROW = 20;

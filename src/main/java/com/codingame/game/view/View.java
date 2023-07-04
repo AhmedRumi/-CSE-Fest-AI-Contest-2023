@@ -152,7 +152,7 @@ public class View {
 
                 if(grid[i][j] == 1) {
 
-                    //cellBlock.setImage(theme + "/wall" + (int) (1 + Math.random() * (numWalls)) + ".png");
+                    cellBlock.setImage(theme + "/wall" + (int) (1 + Math.random() * (numWalls)) + ".png");
                     
                     
                     if(i + 1 < row && grid[i + 1][j] == 1) {
@@ -163,8 +163,8 @@ public class View {
                             .setAnchorY(0.4)
                             .setAnchorX(0.5)
                             .setX(x + wallFillerOffset)
-                            .setY(y);
-                            //.setImage(theme + "/wall" + (int) (1 + Math.random() * (numWalls)) + ".png");
+                            .setY(y)
+                            .setImage(theme + "/wall" + (int) (1 + Math.random() * (numWalls)) + ".png");
                     }
 
                     if(j + 1 < col && grid[i][j + 1] == 1) {
@@ -174,8 +174,8 @@ public class View {
                             .setAnchorY(0.5)
                             .setAnchorX(0.4)
                             .setX(x)
-                            .setY(y + wallFillerOffset);
-                            //.setImage(theme + "/wall" + (int) (1 + Math.random() * (numWalls)) + ".png");
+                            .setY(y + wallFillerOffset)
+                            .setImage(theme + "/wall" + (int) (1 + Math.random() * (numWalls)) + ".png");
                     }
                    
                 } else {

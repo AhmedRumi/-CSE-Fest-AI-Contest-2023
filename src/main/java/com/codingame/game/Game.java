@@ -103,6 +103,7 @@ public class Game {
 //                        occupied = true;
 //                    }
                 }
+                if(maze.getGrid()[i][j]==1)occupied=true;
                 if (!occupied && (playgroundMatrix.getLayout()[i][j] == Config.INVISIBLE_RESOURCE ||
                         playgroundMatrix.getLayout()[i][j] == Config.VISIBLE_RESOURCE)) {
 //                    int coinValue = Config.COIN_VALUES[RandomUtil.randomWeightedIndex(Config.COIN_WEIGHTS)];
@@ -136,12 +137,12 @@ public class Game {
             for(Coin coin: availableCoins) {
                 cnt++;
                 //Rumi
-//                if(maze.isVisible(coin.getPosition(), minion.getPos())) {
-//                    visibleCoins.add(coin);
-//                }
-                if(abs(minion.pos.getX()-coin.getPosition().getX())+abs(minion.pos.getY()-coin.getPosition().getY())<=range) {
+                if(maze.isVisible(coin.getPosition(), minion.getPos(),range)) {
                     visibleCoins.add(coin);
                 }
+//                if(abs(minion.pos.getX()-coin.getPosition().getX())+abs(minion.pos.getY()-coin.getPosition().getY())<=range) {
+//                    visibleCoins.add(coin);
+//                }
             }
         }
         System.out.println("Required operations: " +  cnt);
@@ -291,7 +292,7 @@ public class Game {
             for(Minion minion: player.getMinions()) {
                 //Rumi
 //                if(!minion.isDead() && !opponentMinion.isDead() && maze.isVisible(opponentMinion.getPos(), minion.getPos()) && abs(minion.pos.getX()-opponentMinion.pos.getX()) + abs(minion.pos.getY()-opponentMinion.pos.getY()) <= range) {
-                    if(!minion.isDead() && !opponentMinion.isDead() && abs(minion.pos.getX()-opponentMinion.pos.getX()) + abs(minion.pos.getY()-opponentMinion.pos.getY()) <= range) {
+                    if(!minion.isDead() && !opponentMinion.isDead() && maze.isVisible(opponentMinion.getPos(), minion.getPos(),range)) {
 
                         visible = true;
                     break;
@@ -637,10 +638,10 @@ public class Game {
     public boolean isGameOver() {
         boolean gameOver = false;
         for(Player player: gameManager.getPlayers()) {
-//            if(player.getFlag().getPos().equals(getOpponentOf(player).getFlagBase().getPos())) {
-//                getOpponentOf(player).setWinner(true);
-//                gameOver = true;
-//            }
+            if(player.getFlag().getPos().equals(getOpponentOf(player).getFlagBase().getPos())) {
+                getOpponentOf(player).setWinner(true);
+                gameOver = true;
+            }
             if( (int) player.getMinions().stream().filter(minion -> !minion.isDead()).count() == 0) {
                 getOpponentOf(player).setWinner(true);
                 gameOver = true;
@@ -656,26 +657,26 @@ public class Game {
     public void endGame() {
         int flagReachedCnt = 0;
         Player winner = null;
-//        for(Player player: gameManager.getPlayers()) {
-//            if(player.getFlag().getPos().equals(getOpponentOf(player).getFlagBase().getPos())) {
-//                flagReachedCnt++;
-//                gameManager.addToGameSummary(String.format("%s has captured the flag!", getOpponentOf(player).getNicknameToken()));
-//                winner = getOpponentOf(player);
-//            }
-//        }
-//        if(flagReachedCnt == 2) {
-//            gameManager.addToGameSummary("Both players have captured opponent's flag at the same time\nMatch tied!");
-//        }
-//        else if(flagReachedCnt == 1) {
-//            gameManager.addToGameSummary(String.format("%s is the winner", winner.getNicknameToken()));
-//        }
-//        else {
-//            for (Player player : gameManager.getPlayers()) {
-//                if ((int) player.getMinions().stream().filter(minion -> !minion.isDead()).count() == 0) {
-//                    gameManager.addToGameSummary(String.format("%s has no minions left! %s is the winner", player.getNicknameToken(), getOpponentOf(player).getNicknameToken()));
-//                }
-//            }
-//        }
+        for(Player player: gameManager.getPlayers()) {
+            if(player.getFlag().getPos().equals(getOpponentOf(player).getFlagBase().getPos())) {
+                flagReachedCnt++;
+                gameManager.addToGameSummary(String.format("%s has captured the flag!", getOpponentOf(player).getNicknameToken()));
+                winner = getOpponentOf(player);
+            }
+        }
+        if(flagReachedCnt == 2) {
+            gameManager.addToGameSummary("Both players have captured opponent's flag at the same time\nMatch tied!");
+        }
+        else if(flagReachedCnt == 1) {
+            gameManager.addToGameSummary(String.format("%s is the winner", winner.getNicknameToken()));
+        }
+        else {
+            for (Player player : gameManager.getPlayers()) {
+                if ((int) player.getMinions().stream().filter(minion -> !minion.isDead()).count() == 0) {
+                    gameManager.addToGameSummary(String.format("%s has no minions left! %s is the winner", player.getNicknameToken(), getOpponentOf(player).getNicknameToken()));
+                }
+            }
+        }
 
         for (Player player : gameManager.getPlayers()) {
             if ((int) player.getMinions().stream().filter(minion -> !minion.isDead()).count() == 0) {

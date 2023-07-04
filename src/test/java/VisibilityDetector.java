@@ -107,18 +107,18 @@ public class VisibilityDetector {
             for(int i = 0 ; i < alive_cnt ; i++) {
 
                 if(i > 0) str.append(" | ");
-                int temp=0;
-
-                for(int j=0;j<cols.size();j++)
-                {
-                    if(cols.get(j)==ids.get(i))
-                    {
-                        str.append(String.format("COLLECT %d", ids.get(i)) );
-                        temp=1;
-                        break;
-                    }
-                }
-                if(temp==1)continue;
+//                int temp=0;
+//
+//                for(int j=0;j<cols.size();j++)
+//                {
+//                    if(cols.get(j)==ids.get(i))
+//                    {
+//                        str.append(String.format("COLLECT %d", ids.get(i)) );
+//                        temp=1;
+//                        break;
+//                    }
+//                }
+//                if(temp==1)continue;
                 if(visible_coin_cnt!=0)
                 {
                     str.append(String.format("MOVE %d %d %d", ids.get(i), coin_x, coin_y) );

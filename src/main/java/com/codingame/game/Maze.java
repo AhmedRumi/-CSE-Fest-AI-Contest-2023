@@ -6,6 +6,8 @@ import com.google.inject.Singleton;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.abs;
+
 
 @Singleton
 public class Maze {
@@ -81,8 +83,9 @@ public class Maze {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
 
-                grid[i][j] = 0;
+//                grid[i][j] = 0;
                 // grid[i][j] = RandomUtil.randomInt(0, 1);
+                grid[i][j] = gridObj.get(j, i).isWall() ? 1 : 0;
                 if (i == 0 || j == 0 || i == row - 1 || j == col - 1) grid[i][j] = 1;
             }
         }
@@ -94,26 +97,43 @@ public class Maze {
     }
 
     public boolean isVisible(Coord pos1, Coord pos2) {
-        int x1 = pos1.getX(), y1 = pos1.getY();
-        int x2 = pos2.getX(), y2 = pos2.getY();
-        if (x1 == x2) {
-            return rowVisibility[x1][y1][y2];
+//        int x1 = pos1.getX(), y1 = pos1.getY();
+//        int x2 = pos2.getX(), y2 = pos2.getY();
+//        if (x1 == x2) {
+//            return rowVisibility[x1][y1][y2];
+//        }
+//        if (y1 == y2) {
+//            return colVisibility[y1][x1][x2];
+//        }
+//        return false;
+        if(abs(pos1.getX()-pos2.getX())+abs(pos1.getY()-pos2.getY())<= Config.INITIAL_FOG_OF_WAR)
+        {
+            return true;
         }
-        if (y1 == y2) {
-            return colVisibility[y1][x1][x2];
+        else
+        {
+            return  false;
         }
-        return false;
     }
 
-    public boolean isVisible(Coord pos1, Coord pos2, int limit) {
-        int x1 = pos1.getX(), y1 = pos1.getY();
-        int x2 = pos2.getX(), y2 = pos2.getY();
-        if (x1 == x2) {
-            return rowVisibility[x1][y1][y2] && Math.abs(y1 - y2) <= limit;
+    public boolean isVisible(Coord pos1, Coord pos2, int range) {
+//        int x1 = pos1.getX(), y1 = pos1.getY();
+//        int x2 = pos2.getX(), y2 = pos2.getY();
+//        if (x1 == x2) {
+//            return rowVisibility[x1][y1][y2] && Math.abs(y1 - y2) <= limit;
+//        }
+//        if (y1 == y2) {
+//            return colVisibility[y1][x1][x2] && Math.abs(x1 - x2) <= limit;
+//        }
+//        return false;
+        if(abs(pos1.getX()-pos2.getX())+abs(pos1.getY()-pos2.getY())<=range)
+        {
+            return true;
         }
-        if (y1 == y2) {
-            return colVisibility[y1][x1][x2] && Math.abs(x1 - x2) <= limit;
+        else
+        {
+            return  false;
         }
-        return false;
+
     }
 }
