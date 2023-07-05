@@ -1,5 +1,6 @@
 package com.codingame.game;
 
+import com.codingame.game.action.ActionDirection;
 import com.codingame.game.grid.Grid;
 import com.codingame.game.grid.TetrisBasedMapGenerator;
 import com.google.inject.Singleton;
@@ -37,12 +38,12 @@ public class Maze {
                 boolean visible = true;
                 for (int j = i; j >= 0; j--) {
                     visible = visible && (grid[r][j] == 0);
-                    rowVisibility[r][i][j] = visible;
+//                    rowVisibility[r][i][j] = visible;
                 }
                 visible = true;
                 for (int j = i; j < col; j++) {
                     visible = visible && (grid[r][j] == 0);
-                    rowVisibility[r][i][j] = visible;
+//                    rowVisibility[r][i][j] = visible;
                 }
             }
         }
@@ -97,43 +98,105 @@ public class Maze {
     }
 
     public boolean isVisible(Coord pos1, Coord pos2) {
-//        int x1 = pos1.getX(), y1 = pos1.getY();
-//        int x2 = pos2.getX(), y2 = pos2.getY();
-//        if (x1 == x2) {
-//            return rowVisibility[x1][y1][y2];
-//        }
-//        if (y1 == y2) {
-//            return colVisibility[y1][x1][x2];
-//        }
-//        return false;
-        if(abs(pos1.getX()-pos2.getX())+abs(pos1.getY()-pos2.getY())<= Config.INITIAL_FOG_OF_WAR)
-        {
-            return true;
+        int x1 = pos1.getX(), y1 = pos1.getY();
+        int x2 = pos2.getX(), y2 = pos2.getY();
+        if (x1 == x2) {
+            return rowVisibility[x1][y1][y2];
         }
-        else
-        {
-            return  false;
+        if (y1 == y2) {
+            return colVisibility[y1][x1][x2];
         }
+        return false;
+//        if(abs(pos1.getX()-pos2.getX())+abs(pos1.getY()-pos2.getY())<= Config.INITIAL_FOG_OF_WAR)
+//        {
+//            return true;
+//        }
+//        else
+//        {
+//            return  false;
+//        }
     }
 
     public boolean isVisible(Coord pos1, Coord pos2, int range) {
-//        int x1 = pos1.getX(), y1 = pos1.getY();
-//        int x2 = pos2.getX(), y2 = pos2.getY();
-//        if (x1 == x2) {
-//            return rowVisibility[x1][y1][y2] && Math.abs(y1 - y2) <= limit;
-//        }
-//        if (y1 == y2) {
-//            return colVisibility[y1][x1][x2] && Math.abs(x1 - x2) <= limit;
-//        }
-//        return false;
-        if(abs(pos1.getX()-pos2.getX())+abs(pos1.getY()-pos2.getY())<=range)
-        {
-            return true;
+        int x1 = pos1.getX(), y1 = pos1.getY();
+        int x2 = pos2.getX(), y2 = pos2.getY();
+        if (x1 == x2) {
+            return rowVisibility[x1][y1][y2] && Math.abs(y1 - y2) <= range;
         }
-        else
-        {
-            return  false;
+        if (y1 == y2) {
+            return colVisibility[y1][x1][x2] && Math.abs(x1 - x2) <= range;
         }
+        return false;
+//        if(abs(pos1.getX()-pos2.getX())+abs(pos1.getY()-pos2.getY())<=range)
+//        {
+//            return true;
+//        }
+//        else
+//        {
+//            return  false;
+//        }
 
     }
+
+//    public boolean isVisible(Coord pos1, Coord pos2, int limit, int dir) {
+//        // right
+//        if(dir == 1) {
+//            if((pos1.getY() == pos2.getY()) && (pos2.getX() - pos1.getX() > 0) && (pos2.getX() - pos1.getX() <= limit)) {
+//                return true;
+//            }
+//        }
+//        // left
+//        if(dir == 2) {
+//            if((pos1.getY() == pos2.getY()) && (pos2.getX() - pos1.getX() < 0) && (pos1.getX() - pos2.getX() <= limit)) {
+//                return true;
+//            }
+//        }
+//        // top
+//        if(dir == 3) {
+//            if((pos1.getX() == pos2.getX()) && (pos2.getY() - pos1.getY() > 0) && (pos2.getY() - pos1.getY() <= limit)) {
+//                return true;
+//            }
+//        }
+//        // bottom
+//        if(dir == 4) {
+//            if((pos1.getX() == pos2.getX()) && (pos2.getY() - pos1.getY() < 0) && (pos1.getY() - pos2.getY() <= limit)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
+    public boolean isVisibleToPowerUp(Coord pos1, Coord pos2, ActionDirection dir) {
+        if(dir == ActionDirection.RIGHT) {
+            return isRightAndVisible(pos1, pos2);
+        }
+        else if(dir == ActionDirection.LEFT) {
+            return isLeftAndVisible(pos1, pos2);
+        }
+        else if(dir == ActionDirection.UP) {
+            return isUpAndVisible(pos1, pos2);
+        }
+        else if (dir == ActionDirection.DOWN) {
+            return isDownAndVisible(pos1, pos2);
+        }
+        return false;
+    }
+
+    public boolean isRightAndVisible(Coord pos1, Coord pos2) {
+        return (pos1.getX() < pos2.getX()) && (pos1.getY() == pos2.getY()) && isVisible(pos1, pos2);
+    }
+
+    public boolean isLeftAndVisible(Coord pos1, Coord pos2) {
+        return (pos1.getX() > pos2.getX()) && (pos1.getY() == pos2.getY()) && isVisible(pos1, pos2);
+    }
+
+    public boolean isUpAndVisible(Coord pos1, Coord pos2) {
+        return (pos1.getX() == pos2.getX()) && (pos1.getY() < pos2.getY()) && isVisible(pos1, pos2);
+    }
+
+    public boolean isDownAndVisible(Coord pos1, Coord pos2) {
+        return (pos1.getX() == pos2.getX()) && (pos1.getY() > pos2.getY()) && isVisible(pos1, pos2);
+    }
+
+
 }
