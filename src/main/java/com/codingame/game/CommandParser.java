@@ -173,7 +173,7 @@ public class CommandParser {
     }
 
     private void handleFireCommand(Matcher match, Minion minion) throws GameException, InvalidInputException {
-
+//        System.out.println("Fire pattern matched");
         int dir = getDirection(match, minion);
 
 
@@ -266,23 +266,26 @@ public class CommandParser {
                 }
 
                 if(PLAYER_MOVE_PATTERN.matcher(str).matches()) {
-//                    System.out.print("Faltu debug 2");
+                    System.out.print("Faltu debug 2");
                     handleMoveCommand(PLAYER_MOVE_PATTERN.matcher(str), minion);
                 }
                 else if(PLAYER_WAIT_PATTERN.matcher(str).matches()) {
                     handleWaitCommand(minion);
                 }
                 else if(PLAYER_FIRE_PATTERN.matcher(str).matches()) {
-                    System.out.print("d kahsdja sdhahaksh dkas hfkaf kahfja hfkhassfashf jkJ");
+                    System.out.print("debugging fire pattern");
                     handleFireCommand(PLAYER_FIRE_PATTERN.matcher(str), minion);
                 }
                 else if(PLAYER_FREEZE_PATTERN.matcher(str).matches()) {
+                    System.out.print("debugging freeze pattern");
                     handleFreezeCommand(PLAYER_FREEZE_PATTERN.matcher(str), minion);
                 }
                 else if(PLAYER_MINE_PATTERN.matcher(str).matches()) {
+                    System.out.print("debugging mine pattern");
                     handleMineCommand(PLAYER_MINE_PATTERN.matcher(str), minion);
                 }
                 else if(PLAYER_COLLECT_PATTERN.matcher(str).matches()) {
+                    System.out.print("debugging collect pattern");
                     handleCollectCommand(minion);
                 }
                 else if(PLAYER_UPGRADE_PATTERN.matcher(str).matches()) {

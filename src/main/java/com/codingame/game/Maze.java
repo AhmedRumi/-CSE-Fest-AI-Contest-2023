@@ -167,6 +167,7 @@ public class Maze {
 //    }
 
     public boolean isVisibleToPowerUp(Coord pos1, Coord pos2, ActionDirection dir) {
+        System.out.println("Power up visibility found!");
         if(dir == ActionDirection.RIGHT) {
             return isRightAndVisible(pos1, pos2);
         }
