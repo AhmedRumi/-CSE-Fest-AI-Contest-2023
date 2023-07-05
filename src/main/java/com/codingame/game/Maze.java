@@ -34,12 +34,12 @@ public class Maze {
             for (int i = 0; i < col; i++) {
                 boolean visible = true;
                 for (int j = i; j >= 0; j--) {
-                    visible = visible && (grid[r][j] == 0);
+//                    visible = visible && (grid[r][j] == 0);
                     rowVisibility[r][i][j] = visible;
                 }
                 visible = true;
                 for (int j = i; j < col; j++) {
-                    visible = visible && (grid[r][j] == 0);
+//                    visible = visible && (grid[r][j] == 0);
                     rowVisibility[r][i][j] = visible;
                 }
             }
@@ -52,12 +52,12 @@ public class Maze {
             for (int i = 0; i < row; i++) {
                 boolean visible = true;
                 for (int j = i; j >= 0; j--) {
-                    visible = visible && (grid[j][c] == 0);
+//                    visible = visible && (grid[j][c] == 0);
                     colVisibility[c][i][j] = visible;
                 }
                 visible = true;
                 for (int j = i; j < row; j++) {
-                    visible = visible && (grid[j][c] == 0);
+//                    visible = visible && (grid[j][c] == 0);
                     colVisibility[c][i][j] = visible;
                 }
             }
@@ -69,41 +69,65 @@ public class Maze {
 //        col = RandomUtil.randomOddInt(Config.MIN_MAZE_COL, Config.MAX_MAZE_COl);
         row = Config.MAX_MAZE_ROW;
         col = Config.MAX_MAZE_COl;
-        grid = new int[row][col];
-        Grid gridObj = new Grid(col, row);
-        TetrisBasedMapGenerator generator = new TetrisBasedMapGenerator();
-        generator.init();
-        generator.generateWithHorizontalSymmetry(gridObj, RandomUtil.random);
+//        grid = new int[row][col];
+//        Grid gridObj = new Grid(col, row);
+//        TetrisBasedMapGenerator generator = new TetrisBasedMapGenerator();
+//        generator.init();
+//        generator.generateWithHorizontalSymmetry(gridObj, RandomUtil.random);
+
+        //ratul
+        grid = new int[Config.MAX_MAZE_ROW][Config.MAX_MAZE_COl];
+        for(int i=0;i<Config.MAX_MAZE_ROW;i++) {
+            for(int j=0;j<Config.MAX_MAZE_COl;j++) {
+                grid[i][j] = 0;
+            }
+        }
+//        System.out.println(grid[3][1]);
+        // System.out.print(layout);
+        // System.out.println("Out init!!");
+        int offset = Config.MAX_MAZE_COl/(2*Config.MAX_PRIMARY_RESOURCE_CLUSTER);
+
+        for(int i=0;i< Config.MAX_PRIMARY_RESOURCE_CLUSTER;i++) {
+            // random 4x4 resource cluster
+            int col = RandomUtil.randomInt(i*offset + Config.RANDOM_WALK_MATRIX_DIM/2,
+                    (i+1)*offset-1-Config.RANDOM_WALK_MATRIX_DIM/2);
+            int row = RandomUtil.randomInt(0 + Config.RANDOM_WALK_MATRIX_DIM/2,
+                    Config.MAX_MAZE_ROW-1-Config.RANDOM_WALK_MATRIX_DIM/2);
+            randomWalk(row, col);
+        }
+
+        //ratul
 
         System.out.println("Rows = " + row);
         System.out.println("Cols = " + col);
 
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
+//        for (int i = 0; i < row; i++) {
+//            for (int j = 0; j < col; j++) {
+//
+//                grid[i][j] = 0;
+//                // grid[i][j] = RandomUtil.randomInt(0, 1);
+//                if (i == 0 || j == 0 || i == row - 1 || j == col - 1) grid[i][j] = 1;
+//            }
+//        }
 
-                grid[i][j] = 0;
-                // grid[i][j] = RandomUtil.randomInt(0, 1);
-                if (i == 0 || j == 0 || i == row - 1 || j == col - 1) grid[i][j] = 1;
-            }
-        }
-
-
-      
         setRowVisibility();
         setColVisibility();
     }
 
     public boolean isVisible(Coord pos1, Coord pos2) {
-        int x1 = pos1.getX(), y1 = pos1.getY();
-        int x2 = pos2.getX(), y2 = pos2.getY();
-        if (x1 == x2) {
-            return rowVisibility[x1][y1][y2];
-        }
-        if (y1 == y2) {
-            return colVisibility[y1][x1][x2];
-        }
-        return false;
+//        int x1 = pos1.getX(), y1 = pos1.getY();
+//        int x2 = pos2.getX(), y2 = pos2.getY();
+//        if (x1 == x2) {
+//            return rowVisibility[x1][y1][y2];
+//        }
+//        if (y1 == y2) {
+//            return colVisibility[y1][x1][x2];
+//        }
+//        return false;
+        // ratul
+        return true;
     }
+
 
     public boolean isVisible(Coord pos1, Coord pos2, int limit) {
         int x1 = pos1.getX(), y1 = pos1.getY();
@@ -115,5 +139,61 @@ public class Maze {
             return colVisibility[y1][x1][x2] && Math.abs(x1 - x2) <= limit;
         }
         return false;
+    }
+
+    public boolean isVisible(Coord pos1, Coord pos2, int limit, int dir) {
+        // right
+        if(dir == 1) {
+            if((pos1.getY() == pos2.getY()) && (pos2.getX() - pos1.getX() > 0) && (pos2.getX() - pos1.getX() <= limit)) {
+                return true;
+            }
+        }
+        // left
+        if(dir == 2) {
+            if((pos1.getY() == pos2.getY()) && (pos2.getX() - pos1.getX() < 0) && (pos1.getX() - pos2.getX() <= limit)) {
+                return true;
+            }
+        }
+        // top
+        if(dir == 3) {
+            if((pos1.getX() == pos2.getX()) && (pos2.getY() - pos1.getY() > 0) && (pos2.getY() - pos1.getY() <= limit)) {
+                return true;
+            }
+        }
+        // bottom
+        if(dir == 4) {
+            if((pos1.getX() == pos2.getX()) && (pos2.getY() - pos1.getY() < 0) && (pos1.getY() - pos2.getY() <= limit)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void randomWalk(int row, int col) {
+        int maxResourceInOneCluster = RandomUtil.randomInt(Config.MIN_RESOURCE_IN_ONE_CLUSTER,
+                Config.MAX_RESOURCE_IN_ONE_CLUSTER);
+        grid[row][col] = Config.VISIBLE_RESOURCE;
+        int nextRow = row;
+        int nextCol = col;
+        while(maxResourceInOneCluster != 0) {
+            int tempRow = nextRow + toss();
+            int tempCol = nextCol + toss();
+            if (tempRow > row+Config.RANDOM_WALK_MATRIX_DIM/2 || tempRow < row-Config.RANDOM_WALK_MATRIX_DIM/2
+                    || tempCol > col+Config.RANDOM_WALK_MATRIX_DIM/2 || tempCol < col-Config.RANDOM_WALK_MATRIX_DIM/2) {
+                continue;
+            }
+            nextRow = tempRow;
+            nextCol = tempCol;
+
+            if(grid[nextRow][nextCol] == Config.NO_RESOURCE) {
+                maxResourceInOneCluster --;
+                grid[nextRow][nextCol] = Config.INVISIBLE_RESOURCE;
+            }
+        }
+    }
+
+    public int toss() {
+        int tmp = RandomUtil.randomInt(0, 2) - 1;
+        return tmp;
     }
 }

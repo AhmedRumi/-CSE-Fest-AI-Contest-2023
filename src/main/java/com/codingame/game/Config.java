@@ -27,8 +27,8 @@ public class Config {
     //ratul
     public static final int MAX_PRIMARY_RESOURCE_CLUSTER = 3;
     public static final int RANDOM_WALK_MATRIX_DIM = 5;
-    public static final int MAX_RESOURCE_IN_ONE_CLUSTER = 8;
-    public static final int MIN_RESOURCE_IN_ONE_CLUSTER = 4;
+    public static final int MAX_RESOURCE_IN_ONE_CLUSTER = 12;
+    public static final int MIN_RESOURCE_IN_ONE_CLUSTER = 8;
     public static final int VISIBLE_RESOURCE = 2;
     public static final int INVISIBLE_RESOURCE = 1;
     public static final int NO_RESOURCE = 0;

@@ -58,8 +58,6 @@ public class PlaygroundMatrix {
     //only return -1 or +1
     public int toss() {
         int tmp = RandomUtil.randomInt(0, 2) - 1;
-        // return RandomUtil.randomInt(0, 2) - 1;
-        System.out.println("toss:" + tmp);
         return tmp;
     }
 
