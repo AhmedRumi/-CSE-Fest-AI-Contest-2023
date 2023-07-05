@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Mover {
+public class Collector {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -103,18 +103,24 @@ public class Mover {
             for(int i = 0 ; i < alive_cnt ; i++) {
 
                 if(i > 0) str.append(" | ");
-//                int temp=0;
-//
-//                for(int j=0;j<cols.size();j++)
-//                {
-//                    if(cols.get(j)==ids.get(i))
-//                    {
-//                        str.append(String.format("COLLECT %d", ids.get(i)) );
-//                        temp=1;
-//                        break;
-//                    }
-//                }
-//                if(temp==1)continue;
+                int temp=0;
+
+                if(my_score>=10)
+                {
+                    str.append(String.format("UPGRADE %d 0", ids.get(i)) );
+                    continue;
+                }
+
+                for(int j=0;j<cols.size();j++)
+                {
+                    if(cols.get(j)==ids.get(i))
+                    {
+                        str.append(String.format("COLLECT %d", ids.get(i)) );
+                        temp=1;
+                        break;
+                    }
+                }
+                if(temp==1)continue;
                 if(captured == 1) {
                     str.append(String.format("MOVE %d %d %d", ids.get(i), my_base_x, my_base_y) );
                 }

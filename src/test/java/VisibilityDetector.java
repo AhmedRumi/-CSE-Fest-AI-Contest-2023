@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Mover {
+public class VisibilityDetector {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -85,10 +85,14 @@ public class Mover {
             }
 
             visible_coin_cnt = scanner.nextInt();
+            int coin_x=1,coin_y=1;
             for(int i = 0 ; i < visible_coin_cnt ; i++) {
                 int x, y;
                 x = scanner.nextInt();
                 y = scanner.nextInt();
+
+                coin_x = x;
+                coin_y = y;
                 for(int j=0;j<alive_cnt;j++)
                 {
                     if(xs.get(j)==x && ys.get(j)==y)
@@ -115,6 +119,11 @@ public class Mover {
 //                    }
 //                }
 //                if(temp==1)continue;
+                if(visible_coin_cnt!=0)
+                {
+                    str.append(String.format("MOVE %d %d %d", ids.get(i), coin_x, coin_y) );
+                    continue;
+                }
                 if(captured == 1) {
                     str.append(String.format("MOVE %d %d %d", ids.get(i), my_base_x, my_base_y) );
                 }

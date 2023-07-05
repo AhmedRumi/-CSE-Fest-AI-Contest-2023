@@ -10,6 +10,7 @@ public class Minion {
     int minionID;
     Player owner;
     int health, timeOut, miningStrength;
+    int skillLevels[];
     Coord pos;
     List<String> gameSummary;
     Action intendedAction;
@@ -20,6 +21,7 @@ public class Minion {
         this.owner = owner;
         this.health = Config.MINION_TOTAL_HEALTH;
         this.miningStrength = Config.MINION_INITIAL_MINING_STRENGTH;
+        this.skillLevels = new int[Config.TOTAL_UPGRADEABLE_SKILL_COUNT];
         this.intendedAction = Action.NO_ACTION;
         this.gameSummary = new ArrayList<>();
         this.pathToDest = new ArrayList<>();
@@ -71,4 +73,13 @@ public class Minion {
     public void addTimeOut(int timeOut) {
         this.timeOut = timeOut;
     }
+
+    public int getSkillLevel(int l) {
+        return skillLevels[l];
+    }
+
+    public void increaseUpgradeStrength(int ordinal) {
+        skillLevels[ordinal]++;
+    }
+
 }

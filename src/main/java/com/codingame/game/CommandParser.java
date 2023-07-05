@@ -23,12 +23,18 @@ public class CommandParser {
     static String FIRE_COMMAND = "FIRE <id> <x>";
     static String FREEZE_COMMAND = "FREEZE <id>";
     static String MINE_COMMAND = "MINE <id> <x> <y>";
+
+    static String COLLECT_COMMAND = "COLLECT <id>";
+
+    static String UPGRADE_COMMAND = "UPGRADE <id> <SKILL>";
     String EXPECTED =
             MOVE_COMMAND +
             " or " + WAIT_COMMAND +
             " or " + FIRE_COMMAND +
             " or " + FREEZE_COMMAND +
-            " or " + MINE_COMMAND;
+            " or " + MINE_COMMAND +
+            " or " + COLLECT_COMMAND +
+            " or " + UPGRADE_COMMAND;
 
     static final Pattern PLAYER_MOVE_PATTERN = Pattern.compile(
             "^MOVE\\s+(?<id>\\d+)\\s+(?<x>-?\\d+)\\s+(?<y>-?\\d+)"
@@ -69,8 +75,15 @@ public class CommandParser {
             Pattern.CASE_INSENSITIVE
     );
 
+    static final Pattern PLAYER_UPGRADE_PATTERN = Pattern.compile(
+            "^UPGRADE\\s+(?<id>\\d+)\\s+(?<skill>-?\\d+)"
+                    + "(?:\\s+(?<message>.+))?"
+                    + "$",
+            Pattern.CASE_INSENSITIVE
+    );
+
     static final Pattern PLAYER_ACTION_PATTERN = Pattern.compile(
-            "^(WAIT|MOVE|FIRE|FREEZE|MINE|COLLECT)\\s+(?<id>\\d+).*",
+            "^(WAIT|MOVE|FIRE|FREEZE|MINE|COLLECT|UPGRADE)\\s+(?<id>\\d+).*",
             Pattern.CASE_INSENSITIVE
     );
 
@@ -201,6 +214,29 @@ public class CommandParser {
         minion.setIntendedAction(new mineResource());
         //ToDo: may need to pass more params
     }
+    private void handleUpgradeCommand(Matcher match, Minion minion) throws InvalidInputException, GameException {
+
+        if(!match.matches()) throw new InvalidInputException(EXPECTED, "");
+        int skillNum = Integer.parseInt(match.group("skill"));
+        if(skillNum>=Config.TOTAL_UPGRADEABLE_SKILL_COUNT || skillNum<0){
+            throw new GameException(
+                    String.format(
+                            "Minion %d (%s) cannot upgrade skill (%d). Total skills :%d from 0 to (%d-1)",
+                            minion.getID(),
+                            minion.getOwner().getColor(),
+                            skillNum,
+                            Config.TOTAL_UPGRADEABLE_SKILL_COUNT,
+                            Config.TOTAL_UPGRADEABLE_SKILL_COUNT
+                    )
+            );
+        }
+        else{
+            if(skillNum == 0){
+                minion.setIntendedAction(new UpgradeCollect(minion));
+            }
+        }
+        //ToDo: may need to pass more params
+    }
 
     public void parseCommands(Player player, List<String> outputs) {
 
@@ -211,8 +247,10 @@ public class CommandParser {
 
             try {
                 Minion minion;
+                System.out.println("Faltu1");
                 Matcher match = PLAYER_ACTION_PATTERN.matcher(str);
                 if (match.matches()) {
+                    System.out.println("Faltu3");
                     int minionID = Integer.parseInt(match.group("id"));
                     minion = getMinionFromId(player, minionID);
                     if(minion.isDead()) {
@@ -225,10 +263,12 @@ public class CommandParser {
                     }
                 }
                 else {
+                    System.out.println("Faltu2");
                     throw new InvalidInputException(EXPECTED, str);
                 }
 
                 if(PLAYER_MOVE_PATTERN.matcher(str).matches()) {
+//                    System.out.print("Faltu debug 2");
                     handleMoveCommand(PLAYER_MOVE_PATTERN.matcher(str), minion);
                 }
                 else if(PLAYER_WAIT_PATTERN.matcher(str).matches()) {
@@ -246,6 +286,13 @@ public class CommandParser {
                 }
                 else if(PLAYER_COLLECT_PATTERN.matcher(str).matches()) {
                     handleCollectCommand(minion);
+                }
+                else if(PLAYER_UPGRADE_PATTERN.matcher(str).matches()) {
+                    System.out.printf("FAltu debug");
+                    System.out.printf(str);
+//                    int skillNum = Integer.parseInt(match.group("skill"));
+
+                    handleUpgradeCommand(PLAYER_UPGRADE_PATTERN.matcher(str),minion);
                 }
                 else {
                     throw new InvalidInputException(EXPECTED, str);

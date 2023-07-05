@@ -15,8 +15,13 @@ public class Config {
     public static final int[] COIN_VALUES = {1, 2, 5};
     public static final int[] COIN_WEIGHTS = {10, 3, 1};
     public static final int[] COIN_HEALTHS = {60};
+
+    public static final int[] MINING_STRENGTHS = {10, 12, 15, 20};
+
+    public static final int[] UPGRADE_LIMITS = {3}; //COLLECT
+    public static final int MINING_UPGRADE_PRICE = 10;
     public static final int MIN_MINIONS = 3;
-    public static final int MAX_MINIONS = 3;
+    public static final int MAX_MINIONS = 5;
 
     public static final int MIN_MAZE_ROW = 17;
     public static final int MAX_MAZE_ROW = 20;
@@ -25,10 +30,12 @@ public class Config {
     public static final int MAX_MAZE_COl = 36;
 
     //ratul
-    public static final int MAX_PRIMARY_RESOURCE_CLUSTER = 3;
+    public static final int MAX_PRIMARY_RESOURCE_CLUSTER = 3; //3
     public static final int RANDOM_WALK_MATRIX_DIM = 5;
-    public static final int MAX_RESOURCE_IN_ONE_CLUSTER = 12;
-    public static final int MIN_RESOURCE_IN_ONE_CLUSTER = 8;
+
+    public static final int MAX_RESOURCE_IN_ONE_CLUSTER = 15; //8
+    public static final int MIN_RESOURCE_IN_ONE_CLUSTER = 10; //4
+
     public static final int VISIBLE_RESOURCE = 2;
     public static final int INVISIBLE_RESOURCE = 1;
     public static final int NO_RESOURCE = 0;
@@ -59,4 +66,7 @@ public class Config {
     public static final int FOG_OF_WAR = 20;
     public static final int PRIMARY_FIRE_DISTANCE = 50;
     public static final int FRAME_DURATION = 300;
+    public static final int TOTAL_UPGRADEABLE_SKILL_COUNT = 1;
+
+    public static final int INITIAL_FOG_OF_WAR = 5;
 }
