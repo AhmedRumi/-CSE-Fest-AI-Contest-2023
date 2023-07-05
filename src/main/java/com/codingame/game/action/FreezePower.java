@@ -7,8 +7,8 @@ import java.util.List;
 
 public class FreezePower extends PowerUp{
 
-    public FreezePower(Coord origin, Minion powerUpUser) {
-        super(origin, powerUpUser);
+    public FreezePower(Coord origin, Minion powerUpUser, ActionDirection actionDirection) {
+        super(origin, powerUpUser, actionDirection);
         this.damage = Config.FREEZE_TIMEOUT;
         this.price = Config.FREEZE_PRICE;
         this.damageDistLimit = Config.INF;

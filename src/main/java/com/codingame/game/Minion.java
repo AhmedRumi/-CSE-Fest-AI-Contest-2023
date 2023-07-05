@@ -30,7 +30,9 @@ public class Minion {
     void setPos(Coord pos) { this.pos = pos; }
     void addSummary(String message) { this.gameSummary.add(message); }
     void clearSummary() { this.gameSummary.clear(); }
-    void setIntendedAction(Action action) { this.intendedAction = action; }
+    void setIntendedAction(Action action) {
+        this.intendedAction = action;
+    }
 
     public void dealDamage(int damage) {
         this.health -= damage;

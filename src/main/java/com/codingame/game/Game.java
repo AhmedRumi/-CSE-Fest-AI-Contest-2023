@@ -493,7 +493,9 @@ public class Game {
     private void updateDamage() {
 
         for(Minion minion: aliveMinions) {
+            System.out.println("In update damage ----- loop");
             if(minion.getIntendedAction().getActionType() == ActionType.POWER_UP) {
+                System.out.println("In If ----------");
                 PowerUp power = (PowerUp) minion.getIntendedAction();
                 if(!power.canBuy(minion.getOwner())) {
                     minion.addSummary(String.format("Cannot buy power %s, not enough credit available", power.getPowerType()));
@@ -520,6 +522,7 @@ public class Game {
                 }
             }
         }
+        System.out.println("OUT of loop -> update damage");
     }
 
     private void updateUpgradeSkill() {
